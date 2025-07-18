@@ -1,0 +1,31 @@
+{
+  "name": "syllaby-postman-collection",
+  "version": "1.0.0",
+  "description": "Postman collection and environments for Syllaby API",
+  "scripts": {
+    "postman:login": "postman login --with-api-key",
+    "push:collection": "postman collection push syllaby-api-collection.json --name 'Syllaby API Collection'",
+    "push:env:local": "postman environment push syllaby-local-environment.json --name 'Syllaby Local Development'",
+    "push:env:dev": "postman environment push syllaby-development-environment.json --name 'Syllaby Development'",
+    "push:env:staging": "postman environment push syllaby-staging-environment.json --name 'Syllaby Staging'",
+    "push:env:prod": "postman environment push syllaby-production-environment.json --name 'Syllaby Production'",
+    "push:environments": "npm run push:env:local && npm run push:env:dev && npm run push:env:staging && npm run push:env:prod",
+    "sync:all": "npm run push:collection && npm run push:environments",
+    "pull:collection": "echo 'Use Postman UI to export collection to this directory'",
+    "test:local": "newman run syllaby-api-collection.json -e syllaby-local-environment.json",
+    "test:dev": "newman run syllaby-api-collection.json -e syllaby-development-environment.json",
+    "validate": "node scripts/validate-collection.js"
+  },
+  "devDependencies": {
+    "@postman/cli": "^1.0.0",
+    "newman": "^6.0.0"
+  },
+  "keywords": [
+    "postman",
+    "api",
+    "testing",
+    "syllaby"
+  ],
+  "author": "Syllaby Team",
+  "license": "PRIVATE"
+}

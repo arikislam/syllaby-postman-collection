@@ -1,0 +1,29 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node modules (for Postman CLI)
+node_modules/
+package-lock.json
+
+# Environment files with sensitive data
+*.env
+.env.*
+
+# Postman backup files
+*.postman_collection.backup
+*.postman_environment.backup
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Newman reports
+newman/

@@ -1,0 +1,88 @@
+name: Validate and Sync Postman Collection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Validate JSON syntax
+      run: |
+        echo "Validating collection JSON..."
+        node -e "JSON.parse(require('fs').readFileSync('syllaby-api-collection.json', 'utf8'))"
+        
+        echo "Validating environment files..."
+        for file in syllaby-*-environment.json; do
+          echo "Checking $file..."
+          node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))"
+        done
+    
+    - name: Run Newman tests (dry run)
+      run: |
+        # This is a dry run to validate the collection structure
+        npx newman run syllaby-api-collection.json \
+          -e syllaby-local-environment.json \
+          --bail \
+          --suppress-exit-code \
+          --reporters cli,json \
+          --reporter-json-export newman-report.json
+      continue-on-error: true
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: newman-report
+        path: newman-report.json
+
+  sync-to-postman:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install Postman CLI
+      run: npm install -g @postman/cli
+    
+    - name: Login to Postman
+      env:
+        POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+      run: postman login --with-api-key $POSTMAN_API_KEY
+    
+    - name: Push to Postman
+      run: |
+        # Push collection
+        postman collection push syllaby-api-collection.json \
+          --name "Syllaby API Collection"
+        
+        # Push environments
+        postman environment push syllaby-local-environment.json \
+          --name "Syllaby Local Development"
+        postman environment push syllaby-development-environment.json \
+          --name "Syllaby Development"
+        postman environment push syllaby-staging-environment.json \
+          --name "Syllaby Staging"
+        postman environment push syllaby-production-environment.json \
+          --name "Syllaby Production"

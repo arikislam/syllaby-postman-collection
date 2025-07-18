@@ -1,0 +1,1205 @@
+{
+  "info": {
+    "_postman_id": "syllaby-api-collection",
+    "name": "Syllaby API Collection",
+    "description": "Complete API collection for Syllaby - AI-powered video creation and social media management platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "// Set common headers",
+          "pm.request.headers.add({",
+          "    key: 'Accept',",
+          "    value: '{{accept}}'",
+          "});",
+          "",
+          "pm.request.headers.add({",
+          "    key: 'Content-Type',",
+          "    value: '{{content_type}}'",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "// Check response time",
+          "pm.test(\"Response time is less than 1000ms\", function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+          "});"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test registration response",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('user');",
+                  "    pm.expect(jsonData.data).to.have.property('token');",
+                  "});",
+                  "",
+                  "// Save auth token if registration successful",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_password}}\",\n    \"password_confirmation\": \"{{user_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/authentication/register",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "register"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": [
+            {
+              "name": "Success - User Registered",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/register",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"name\": \"Test User\",\n            \"email\": \"test@example.com\",\n            \"created_at\": \"2025-01-18T00:00:00.000000Z\"\n        },\n        \"token\": \"1|laravel_sanctum_token_here\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test login response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('user');",
+                  "    pm.expect(jsonData.data).to.have.property('token');",
+                  "});",
+                  "",
+                  "// Save auth token",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "    pm.environment.set(\"user_id\", jsonData.data.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// You can add any pre-request logic here",
+                  "console.log(\"Attempting to login with email:\", pm.environment.get(\"user_email\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/authentication/login",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "login"
+              ]
+            },
+            "description": "Login with email and password to get authentication token"
+          },
+          "response": [
+            {
+              "name": "Success - User Logged In",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/login",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"name\": \"Test User\",\n            \"email\": \"test@example.com\",\n            \"has_seen_welcome_message\": true,\n            \"created_at\": \"2025-01-18T00:00:00.000000Z\"\n        },\n        \"token\": \"1|laravel_sanctum_token_here\"\n    }\n}"
+            },
+            {
+              "name": "Error - Invalid Credentials",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"wrongpassword\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/login",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"The provided credentials are incorrect.\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Authentication endpoints for user registration, login, logout, and social authentication"
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Current User Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test user profile response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has user data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data).to.have.property('email');",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "});",
+                  "",
+                  "// Verify authorization header is present",
+                  "pm.test(\"Request has authorization header\", function () {",
+                  "    pm.expect(pm.request.headers.has('Authorization')).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/user/me",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "user",
+                "me"
+              ]
+            },
+            "description": "Get the authenticated user's profile information. Requires authentication token."
+          },
+          "response": [
+            {
+              "name": "Success - User Profile",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{api_url}}/user/me",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Test User\",\n        \"email\": \"test@example.com\",\n        \"has_seen_welcome_message\": true,\n        \"subscription\": {\n            \"plan\": \"basic\",\n            \"status\": \"active\",\n            \"credits_remaining\": 100,\n            \"credits_total\": 100\n        },\n        \"storage\": {\n            \"used\": 1024000,\n            \"total\": 5368709120\n        },\n        \"created_at\": \"2025-01-18T00:00:00.000000Z\",\n        \"updated_at\": \"2025-01-18T00:00:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Error - Unauthenticated",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/user/me",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "me"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Unauthenticated.\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "User management endpoints including profile, password, credit history, and storage",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Videos - Faceless",
+      "item": [
+        {
+          "name": "Create Faceless Video",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has faceless video data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "});",
+                  "",
+                  "// Save faceless ID for other requests",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set(\"faceless_id\", jsonData.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"My Faceless Video\",\n    \"topic\": \"Technology trends in 2024\",\n    \"duration\": 60,\n    \"voice_id\": \"voice_123\",\n    \"genre\": \"educational\",\n    \"style\": \"professional\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless"
+              ]
+            },
+            "description": "Create a new faceless video"
+          }
+        },
+        {
+          "name": "Get Faceless Video",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}"
+              ]
+            },
+            "description": "Get details of a specific faceless video"
+          }
+        },
+        {
+          "name": "Update Faceless Video",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Updated Faceless Video Title\",\n    \"topic\": \"Updated topic\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}"
+              ]
+            },
+            "description": "Update faceless video details"
+          }
+        },
+        {
+          "name": "Render Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"quality\": \"1080p\",\n    \"format\": \"mp4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/render",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}",
+                "render"
+              ]
+            },
+            "description": "Start rendering the faceless video"
+          }
+        },
+        {
+          "name": "Retry Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/retry",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}",
+                "retry"
+              ]
+            },
+            "description": "Retry failed faceless video generation"
+          }
+        },
+        {
+          "name": "Generate/Update Scripts",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"script\": \"This is the updated script content for the video...\",\n    \"regenerate\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/scripts",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}",
+                "scripts"
+              ]
+            },
+            "description": "Generate or update video scripts"
+          }
+        },
+        {
+          "name": "Convert Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"format\": \"mp4\",\n    \"resolution\": \"720p\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/convert",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}",
+                "convert"
+              ]
+            },
+            "description": "Convert faceless video to different format"
+          }
+        },
+        {
+          "name": "Assets",
+          "item": [
+            {
+              "name": "Get Faceless Assets",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/assets",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "assets"
+                  ]
+                },
+                "description": "Get all assets for a faceless video"
+              }
+            },
+            {
+              "name": "Update Faceless Assets",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"assets\": [\n        {\n            \"id\": \"asset_123\",\n            \"order\": 1,\n            \"duration\": 5\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/assets",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "assets"
+                  ]
+                },
+                "description": "Update assets for a faceless video"
+              }
+            },
+            {
+              "name": "Get Single Asset",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/assets/{{asset_id}}",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "assets",
+                    "{{asset_id}}"
+                  ]
+                },
+                "description": "Get details of a specific asset"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Media",
+          "item": [
+            {
+              "name": "Upload Media",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "",
+                      "description": "Media file to upload"
+                    },
+                    {
+                      "key": "type",
+                      "value": "image",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/media/upload",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "media",
+                    "upload"
+                  ]
+                },
+                "description": "Upload media files for faceless video"
+              }
+            },
+            {
+              "name": "Transload Media",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/media/video.mp4\",\n    \"type\": \"video\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/media/transload",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "media",
+                    "transload"
+                  ]
+                },
+                "description": "Transfer media from URL"
+              }
+            },
+            {
+              "name": "Generate Media",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"type\": \"thumbnail\",\n    \"prompt\": \"Generate a thumbnail for technology video\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/media/generate",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "media",
+                    "generate"
+                  ]
+                },
+                "description": "Generate media using AI"
+              }
+            },
+            {
+              "name": "Get Animation",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/media/animation",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "media",
+                    "animation"
+                  ]
+                },
+                "description": "Get animation settings"
+              }
+            },
+            {
+              "name": "Create Animation",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"type\": \"zoom\",\n    \"duration\": 3,\n    \"easing\": \"ease-in-out\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/media/animation",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "media",
+                    "animation"
+                  ]
+                },
+                "description": "Create animation for media"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Export Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"format\": \"mp4\",\n    \"quality\": \"high\",\n    \"include_watermark\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/export",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless_id}}",
+                "export"
+              ]
+            },
+            "description": "Export the final faceless video"
+          }
+        },
+        {
+          "name": "Transcriptions",
+          "item": [
+            {
+              "name": "Upload Audio for Transcription",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "audio",
+                      "type": "file",
+                      "src": "",
+                      "description": "Audio file to transcribe"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/transcriptions/upload",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "transcriptions",
+                    "upload"
+                  ]
+                },
+                "description": "Upload audio file for transcription"
+              }
+            },
+            {
+              "name": "Create Transcription",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"language\": \"en\",\n    \"model\": \"whisper-large\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/transcriptions",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "transcriptions"
+                  ]
+                },
+                "description": "Create transcription from audio"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scraping",
+          "item": [
+            {
+              "name": "Scrape Content",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/article\",\n    \"extract\": [\"title\", \"content\", \"images\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/scrape",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "scrape"
+                  ]
+                },
+                "description": "Scrape content from URL"
+              }
+            },
+            {
+              "name": "Scrape Images",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/gallery\",\n    \"limit\": 10,\n    \"quality\": \"high\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/scrape/images",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "scrape",
+                    "images"
+                  ]
+                },
+                "description": "Scrape images from URL"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Options",
+          "item": [
+            {
+              "name": "Get Fonts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/fonts",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "fonts"
+                  ]
+                },
+                "description": "Get available fonts for faceless videos"
+              }
+            },
+            {
+              "name": "Get Facts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/facts",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "facts"
+                  ]
+                },
+                "description": "Get available facts/themes"
+              }
+            },
+            {
+              "name": "Get Genres",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/genres",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "genres"
+                  ]
+                },
+                "description": "Get available video genres"
+              }
+            },
+            {
+              "name": "Get Transitions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/transitions",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "transitions"
+                  ]
+                },
+                "description": "Get available transitions"
+              }
+            },
+            {
+              "name": "Get Backgrounds",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/backgrounds",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "backgrounds"
+                  ]
+                },
+                "description": "Get available backgrounds"
+              }
+            },
+            {
+              "name": "Get Caption Effects",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/caption/effects",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "caption",
+                    "effects"
+                  ]
+                },
+                "description": "Get available caption effects"
+              }
+            },
+            {
+              "name": "Get Overlays",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/options/overlays",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "options",
+                    "overlays"
+                  ]
+                },
+                "description": "Get available overlays"
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Faceless video creation and management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "collection_id",
+      "value": "syllaby-api-v1",
+      "type": "string"
+    },
+    {
+      "key": "date_created",
+      "value": "2025-01-18",
+      "type": "string"
+    }
+  ]
+}
