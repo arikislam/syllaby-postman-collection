@@ -32,23 +32,21 @@ This repository contains the Postman collection and environments for the Syllaby
 4. Import your environment file (e.g., `syllaby-local-environment.json`)
 5. Select the environment from the dropdown
 
-### 2. Using Postman CLI (Recommended)
+### 2. Using Automatic Sync (Recommended)
 
 ```bash
 # Install dependencies
 npm install
 
-# Login to Postman (first time only)
-npm run postman:login
+# Get your Postman API key from:
+# https://web.postman.co/settings/me/api-keys
 
-# Push collection to Postman cloud
-npm run push:collection
+# Sync everything to Postman cloud
+POSTMAN_API_KEY=your-key npm run sync
 
-# Push all environments
-npm run push:environments
-
-# Pull latest from Postman cloud
-npm run pull:collection
+# Or save key in .env file
+echo "POSTMAN_API_KEY=your-key" > .env
+npm run sync
 ```
 
 ## Workflow

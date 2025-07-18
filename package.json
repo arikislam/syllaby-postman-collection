@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Postman collection and environments for Syllaby API",
   "scripts": {
+    "sync": "node postman-sync.js",
+    "sync:check": "POSTMAN_API_KEY=$POSTMAN_API_KEY node postman-sync.js",
     "test:local": "newman run syllaby-api-collection.json -e syllaby-local-environment.json",
     "test:dev": "newman run syllaby-api-collection.json -e syllaby-development-environment.json",
     "test:staging": "newman run syllaby-api-collection.json -e syllaby-staging-environment.json",

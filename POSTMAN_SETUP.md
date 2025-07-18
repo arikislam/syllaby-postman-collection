@@ -1,6 +1,33 @@
 # Postman Setup Guide for Syllaby API
 
-## Quick Start
+## Quick Start - Automatic Sync (NEW!)
+
+### 1. Get Your Postman API Key
+1. Go to: https://web.postman.co/settings/me/api-keys
+2. Click "Generate API Key"
+3. Copy the key
+
+### 2. Run the Sync Script
+
+```bash
+# Method 1: One-time sync
+POSTMAN_API_KEY=your-key-here npm run sync
+
+# Method 2: Save key in .env file
+echo "POSTMAN_API_KEY=your-key-here" > .env
+npm run sync
+
+# Method 3: Pass as argument
+node postman-sync.js your-key-here
+```
+
+The script will:
+- ✅ Check if collection/environments exist in your Postman account
+- ✅ Update existing items or create new ones
+- ✅ Sync everything in one command
+- ✅ Show progress and results
+
+## Quick Start - Manual Import
 
 ### 1. Import to Postman Desktop App
 
