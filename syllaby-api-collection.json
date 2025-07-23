@@ -4356,6 +4356,439 @@
               }
             }
           ]
+        },
+        {
+          "name": "Partial Update Scheduler",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"active\": false\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}"
+              ]
+            },
+            "description": "Partially update scheduler"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated scheduler data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Toggle Scheduler",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"active\": true\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}/toggle",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}",
+                "toggle"
+              ]
+            },
+            "description": "Toggle scheduler active status"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has toggle status\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('active');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Run Scheduler",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"force\": false,\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}/run",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}",
+                "run"
+              ]
+            },
+            "description": "Manually run scheduler"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has run status\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('run_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parse CSV for Scheduler",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "csv_file",
+                  "type": "file",
+                  "src": "schedule_data.csv"
+                },
+                {
+                  "key": "delimiter",
+                  "value": ",",
+                  "type": "text"
+                },
+                {
+                  "key": "has_header",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/csv-parser",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "csv-parser"
+              ]
+            },
+            "description": "Parse CSV file for scheduler data"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has parsed data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('rows');",
+                  "    pm.expect(response.data).to.have.property('headers');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Scheduler Occurrences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}/occurrences",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}",
+                "occurrences"
+              ]
+            },
+            "description": "Get all occurrences for a scheduler"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has occurrences array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Scheduler Occurrence",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scheduled_at\": \"2025-01-25T14:00:00Z\",\n  \"content\": \"Scheduled post content\",\n  \"status\": \"pending\",\n  \"metadata\": {\n    \"platform\": \"instagram\",\n    \"hashtags\": [\"#content\", \"#automation\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}/occurrences",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}",
+                "occurrences"
+              ]
+            },
+            "description": "Create new occurrence for scheduler"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has occurrence data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('occurrence_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Occurrence",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\",\n  \"executed_at\": \"2025-01-25T14:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/occurrences/{{occurrence_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "occurrences",
+                "{{occurrence_id}}"
+              ]
+            },
+            "description": "Update scheduler occurrence"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated occurrence data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Occurrence Scripts",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scripts\": [\n    {\n      \"type\": \"pre_execution\",\n      \"content\": \"console.log('Starting scheduled task');\",\n      \"timeout\": 30\n    },\n    {\n      \"type\": \"post_execution\",\n      \"content\": \"console.log('Task completed successfully');\",\n      \"timeout\": 15\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/schedulers/occurrences/{{occurrence_id}}/scripts",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "occurrences",
+                "{{occurrence_id}}",
+                "scripts"
+              ]
+            },
+            "description": "Update scripts for scheduler occurrence"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated scripts data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('scripts');",
+                  "    pm.expect(response.data.scripts).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Scheduler Events",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/schedulers/{{scheduler_id}}/events",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "schedulers",
+                "{{scheduler_id}}",
+                "events"
+              ]
+            },
+            "description": "Delete all events for a scheduler"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response confirms deletion\", function () {",
+                  "    if (pm.response.code === 200) {",
+                  "        const response = pm.response.json();",
+                  "        pm.expect(response).to.have.property('message');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ],
       "description": "Scheduler management endpoints",
