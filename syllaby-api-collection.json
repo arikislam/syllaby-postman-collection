@@ -5739,6 +5739,698 @@
           }
         ]
       }
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "Get Videos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos"
+              ]
+            },
+            "description": "Get all videos"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has videos array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video_id}}"
+              ]
+            },
+            "description": "Get specific video by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Video",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Video Title\",\n  \"description\": \"Updated video description\",\n  \"settings\": {\n    \"quality\": \"HD\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/{{video_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video_id}}"
+              ]
+            },
+            "description": "Update video details"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video_id}}"
+              ]
+            },
+            "description": "Delete a video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video Render",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video_uuid}}/render",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video_uuid}}",
+                "render"
+              ]
+            },
+            "description": "Get video render by UUID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has render data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video_id}}/status",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video_id}}",
+                "status"
+              ]
+            },
+            "description": "Get video processing status"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Faceless Video\",\n  \"script\": \"This is the script for my faceless video\",\n  \"settings\": {\n    \"voice\": \"professional\",\n    \"background\": \"tech\",\n    \"duration\": 60\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless"
+              ]
+            },
+            "description": "Create a new faceless video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has faceless video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('faceless_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Video creation and management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Real Clones",
+      "item": [
+        {
+          "name": "Get Avatars",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/real-clones/avatars",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "avatars"
+              ]
+            },
+            "description": "Get all avatars"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has avatars array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Avatar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/real-clones/avatars/{{avatar_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "avatars",
+                "{{avatar_id}}"
+              ]
+            },
+            "description": "Delete an avatar"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Photo Avatar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "src": "avatar-photo.jpg"
+                },
+                {
+                  "key": "name",
+                  "value": "My Avatar",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/photo-avatars",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "photo-avatars"
+              ]
+            },
+            "description": "Create avatar from photo"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has avatar data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('photo_avatar_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Real Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Real Clone\",\n  \"description\": \"Professional real clone for business videos\",\n  \"avatar_id\": \"{{photo_avatar_id}}\",\n  \"settings\": {\n    \"voice_style\": \"professional\",\n    \"language\": \"en-US\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones"
+              ]
+            },
+            "description": "Create a new real clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('clone_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Real Clone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}"
+              ]
+            },
+            "description": "Get specific real clone by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Real Clone",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Real Clone\",\n  \"description\": \"Updated clone description\",\n  \"settings\": {\n    \"voice_style\": \"casual\",\n    \"language\": \"en-US\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}"
+              ]
+            },
+            "description": "Update an existing real clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Real Clone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}"
+              ]
+            },
+            "description": "Delete a real clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Clone Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}/status",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}",
+                "status"
+              ]
+            },
+            "description": "Get real clone processing status"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Real Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"script\": \"Hello, this is my real clone speaking\",\n  \"settings\": {\n    \"emotion\": \"neutral\",\n    \"background\": \"office\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}/generate",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}",
+                "generate"
+              ]
+            },
+            "description": "Generate video with real clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has generation data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('generation_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Real clone avatar creation and management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
     }
   ],
   "variable": [
