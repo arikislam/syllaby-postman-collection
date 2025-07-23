@@ -6431,6 +6431,727 @@
           }
         ]
       }
+    },
+    {
+      "name": "Speeches",
+      "item": [
+        {
+          "name": "Get Voices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/speeches/voices",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "speeches",
+                "voices"
+              ]
+            },
+            "description": "Get available voice options"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has voices array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Speech and voice management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Social Accounts",
+      "item": [
+        {
+          "name": "Get Social Accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/social-accounts",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social-accounts"
+              ]
+            },
+            "description": "Get all connected social accounts"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has accounts array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Social account management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Social Authentication",
+      "item": [
+        {
+          "name": "Social Redirect",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/social/redirect/{{provider}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "redirect",
+                "{{provider}}"
+              ]
+            },
+            "description": "Get social provider redirect URL"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has redirect URL\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('redirect_url');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Social Callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/social/callback/{{provider}}?code={{auth_code}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "callback",
+                "{{provider}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "{{auth_code}}"
+                }
+              ]
+            },
+            "description": "Handle social provider callback"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has connection data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disconnect Social Provider",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{api_url}}/social/disconnect/{{provider}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "disconnect",
+                "{{provider}}"
+              ]
+            },
+            "description": "Disconnect social provider"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Social Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{api_url}}/social/refresh/{{provider}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "refresh",
+                "{{provider}}"
+              ]
+            },
+            "description": "Refresh social provider token"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has token data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Social Channels",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/social/callback/{{provider}}/channels",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "callback",
+                "{{provider}}",
+                "channels"
+              ]
+            },
+            "description": "Get channels for social provider"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has channels array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Connect Social Channels",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"channels\": [\n    {\n      \"id\": \"channel_id\",\n      \"name\": \"Channel Name\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/social/callback/{{provider}}/channels",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "social",
+                "callback",
+                "{{provider}}",
+                "channels"
+              ]
+            },
+            "description": "Connect social provider channels"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has connected channels\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Social media authentication and channel management",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Publishing",
+      "item": [
+        {
+          "name": "Publish to Draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Draft Publication\",\n  \"content\": \"This is a draft publication\",\n  \"video_id\": \"{{video_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/draft",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "draft"
+              ]
+            },
+            "description": "Save publication as draft"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has draft data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to YouTube",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"YouTube Video Title\",\n  \"description\": \"YouTube video description\",\n  \"video_id\": \"{{video_id}}\",\n  \"privacy\": \"public\",\n  \"category_id\": 22\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/youtube",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "youtube"
+              ]
+            },
+            "description": "Publish video to YouTube"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to TikTok",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"TikTok Video Title\",\n  \"description\": \"TikTok video description\",\n  \"video_id\": \"{{video_id}}\",\n  \"privacy\": \"public\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/tiktok",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "tiktok"
+              ]
+            },
+            "description": "Publish video to TikTok"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to LinkedIn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"LinkedIn Post Title\",\n  \"content\": \"LinkedIn post content\",\n  \"video_id\": \"{{video_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/linkedin",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "linkedin"
+              ]
+            },
+            "description": "Publish content to LinkedIn"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to Facebook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Facebook Post Title\",\n  \"content\": \"Facebook post content\",\n  \"video_id\": \"{{video_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/facebook",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "facebook"
+              ]
+            },
+            "description": "Publish content to Facebook"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to Instagram",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caption\": \"Instagram post caption\",\n  \"video_id\": \"{{video_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/instagram",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "instagram"
+              ]
+            },
+            "description": "Publish content to Instagram"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publish to Threads",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Threads post content\",\n  \"video_id\": \"{{video_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publish/threads",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publish",
+                "threads"
+              ]
+            },
+            "description": "Publish content to Threads"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Social media publishing endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
     }
   ],
   "variable": [
