@@ -4621,6 +4621,261 @@
               }
             }
           ]
+        },
+        {
+          "name": "Get Publication Limits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/publications/limits",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "limits"
+              ]
+            },
+            "description": "Get publication limits and quotas"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has limits data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('daily_limit');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Partial Update Publication",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Partially Updated Title\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publications/{{publication_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "{{publication_id}}"
+              ]
+            },
+            "description": "Partially update publication"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated publication data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Publication Channel",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/publications/{{publication_id}}/channels/{{channel_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "{{publication_id}}",
+                "channels",
+                "{{channel_id}}"
+              ]
+            },
+            "description": "Get publication channel details"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has channel data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Publication Thumbnail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"https://example.com/thumbnail.jpg\",\n  \"alt_text\": \"Publication thumbnail\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publications/{{publication_id}}/thumbnail",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "{{publication_id}}",
+                "thumbnail"
+              ]
+            },
+            "description": "Create thumbnail for publication"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has thumbnail data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Publication Thumbnail",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/publications/{{publication_id}}/thumbnail",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "{{publication_id}}",
+                "thumbnail"
+              ]
+            },
+            "description": "Delete publication thumbnail"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Attach Thumbnails",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"thumbnail_ids\": [\"thumb_123\", \"thumb_456\"],\n  \"primary_thumbnail_id\": \"thumb_123\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/publications/{{publication_id}}/thumbnails/attach",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "publications",
+                "{{publication_id}}",
+                "thumbnails",
+                "attach"
+              ]
+            },
+            "description": "Attach thumbnails to publication"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has attachment data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('attached_thumbnails');",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ],
       "description": "Publication management and publishing endpoints",
@@ -6021,6 +6276,1048 @@
               }
             }
           ]
+        },
+        {
+          "name": "Get Specific Video",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}"
+              ]
+            },
+            "description": "Get specific video by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Video",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Video Title\",\n  \"description\": \"Updated video description\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}"
+              ]
+            },
+            "description": "Update video details"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}"
+              ]
+            },
+            "description": "Delete a video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video Render Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{uuid}}/render",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{uuid}}",
+                "render"
+              ]
+            },
+            "description": "Get video render status by UUID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has render data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video Processing Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}/status",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}",
+                "status"
+              ]
+            },
+            "description": "Get video processing status"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Footage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Footage\",\n  \"description\": \"Footage description\",\n  \"source_url\": \"https://example.com/video.mp4\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/footage",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage"
+              ]
+            },
+            "description": "Create new footage"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has footage data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('footage_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Footage",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Footage Title\",\n  \"description\": \"Updated footage description\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/footage/{{footage}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage",
+                "{{footage}}"
+              ]
+            },
+            "description": "Update footage details"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated footage data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Footage Preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quality\": \"HD\",\n  \"format\": \"mp4\",\n  \"bitrate\": \"2000\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/footage/{{footage}}/preference",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage",
+                "{{footage}}",
+                "preference"
+              ]
+            },
+            "description": "Update footage rendering preferences"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has preference data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Render Footage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"render_settings\": {\n    \"quality\": \"HD\",\n    \"format\": \"mp4\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/footage/{{footage}}/render",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage",
+                "{{footage}}",
+                "render"
+              ]
+            },
+            "description": "Start footage rendering"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has render job data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('job_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Footage Timeline",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/footage/{{footage}}/timeline",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage",
+                "{{footage}}",
+                "timeline"
+              ]
+            },
+            "description": "Get footage timeline data"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has timeline data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Footage Timeline",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timeline\": {\n    \"clips\": [\n      {\n        \"start\": 0,\n        \"end\": 30,\n        \"source\": \"video1.mp4\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/footage/{{footage}}/timeline",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "footage",
+                "{{footage}}",
+                "timeline"
+              ]
+            },
+            "description": "Update footage timeline"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated timeline\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Faceless Video",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}"
+              ]
+            },
+            "description": "Get specific faceless video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has faceless video data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Faceless Video",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Faceless Video\",\n  \"script\": \"Updated script content\",\n  \"settings\": {\n    \"voice\": \"professional\",\n    \"background\": \"tech\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}"
+              ]
+            },
+            "description": "Update faceless video details"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated faceless video\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Render Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"render_settings\": {\n    \"quality\": \"HD\",\n    \"format\": \"mp4\",\n    \"resolution\": \"1920x1080\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/render",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "render"
+              ]
+            },
+            "description": "Start faceless video rendering"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has render job data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('job_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Retry Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/retry",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "retry"
+              ]
+            },
+            "description": "Retry failed faceless video processing"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has retry job data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Faceless Scripts",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scripts\": [\n    {\n      \"scene\": 1,\n      \"text\": \"Welcome to our AI-powered video creation platform\",\n      \"duration\": 5\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/scripts",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "scripts"
+              ]
+            },
+            "description": "Update faceless video scripts"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated scripts\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Convert Faceless Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_format\": \"mp4\",\n  \"quality\": \"HD\",\n  \"compression\": \"medium\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/convert",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "convert"
+              ]
+            },
+            "description": "Convert faceless video to different format"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has conversion job data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('conversion_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Faceless Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/assets",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "assets"
+              ]
+            },
+            "description": "Get assets for faceless video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has assets array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Faceless Assets",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assets\": [\n    {\n      \"id\": \"asset_123\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 100\n      },\n      \"duration\": 10\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/assets",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "assets"
+              ]
+            },
+            "description": "Update faceless video assets"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated assets\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Faceless Asset",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/faceless/{{faceless}}/assets/{{asset}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "faceless",
+                "{{faceless}}",
+                "assets",
+                "{{asset}}"
+              ]
+            },
+            "description": "Get specific faceless video asset"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has asset data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Video Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}/assets",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}",
+                "assets"
+              ]
+            },
+            "description": "Get all assets for a video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has assets array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Video Asset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"asset_url\": \"https://example.com/asset.jpg\",\n  \"asset_type\": \"image\",\n  \"position\": {\n    \"x\": 0,\n    \"y\": 0\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}/assets",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}",
+                "assets"
+              ]
+            },
+            "description": "Add asset to video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has asset data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Video Asset",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}/assets/{{asset}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}",
+                "assets",
+                "{{asset}}"
+              ]
+            },
+            "description": "Delete asset from video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Transload Video Media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_url\": \"https://example.com/media.mp4\",\n  \"media_type\": \"video\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/videos/{{video}}/assets/transload",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "videos",
+                "{{video}}",
+                "assets",
+                "transload"
+              ]
+            },
+            "description": "Transload media from external URL"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has transload job data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('job_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ],
       "description": "Video creation and management endpoints",
@@ -6413,6 +7710,151 @@
                   "    const response = pm.response.json();",
                   "    pm.expect(response).to.have.property('data');",
                   "    pm.expect(response.data).to.have.property('generation_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Retry Real Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"retry_reason\": \"Generation failed, retrying with updated settings\",\n  \"settings\": {\n    \"quality\": \"high\",\n    \"retry_count\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}/retries",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}",
+                "retries"
+              ]
+            },
+            "description": "Retry failed real clone generation"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has retry data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('retry_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scrape Content for Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com/article\",\n  \"extract_images\": true,\n  \"extract_text\": true,\n  \"max_content_length\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}/scrape",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}",
+                "scrape"
+              ]
+            },
+            "description": "Scrape content from URL for real clone video"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has scraped content\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('content');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Clone Scripts",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scripts\": [\n    {\n      \"id\": \"script1\",\n      \"content\": \"Welcome to our channel! Today we'll discuss...\",\n      \"language\": \"en-US\",\n      \"duration\": 30\n    },\n    {\n      \"id\": \"script2\",\n      \"content\": \"Don't forget to like and subscribe!\",\n      \"language\": \"en-US\",\n      \"duration\": 10\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/real-clones/{{clone_id}}/scripts",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "real-clones",
+                "{{clone_id}}",
+                "scripts"
+              ]
+            },
+            "description": "Update scripts for real clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated scripts data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('scripts');",
+                  "    pm.expect(response.data.scripts).to.be.an('array');",
                   "});"
                 ]
               }
