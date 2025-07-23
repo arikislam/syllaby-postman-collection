@@ -9932,6 +9932,920 @@
           }
         ]
       }
+    },
+    {
+      "name": "Stock Media",
+      "item": [
+        {
+          "name": "Search Stock Images",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/stock-media/images/search?query=technology&page=1&per_page=20&orientation=landscape",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "stock-media",
+                "images",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "technology"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "orientation",
+                  "value": "landscape"
+                }
+              ]
+            },
+            "description": "Search for stock images"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has images array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Stock Image Collection",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/stock-media/images/collections/{{collection_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "stock-media",
+                "images",
+                "collections",
+                "{{collection_id}}"
+              ]
+            },
+            "description": "Get images from a specific collection"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has collection images\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('collection');",
+                  "    pm.expect(response.data).to.have.property('images');",
+                  "    pm.expect(response.data.images).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search Stock Videos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/stock-media/videos/search?query=business&page=1&per_page=15&duration=short&quality=hd",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "stock-media",
+                "videos",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "business"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "15"
+                },
+                {
+                  "key": "duration",
+                  "value": "short"
+                },
+                {
+                  "key": "quality",
+                  "value": "hd"
+                }
+              ]
+            },
+            "description": "Search for stock videos"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has videos array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Stock Video Collection",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/stock-media/videos/collections/{{collection_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "stock-media",
+                "videos",
+                "collections",
+                "{{collection_id}}"
+              ]
+            },
+            "description": "Get videos from a specific collection"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has collection videos\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('collection');",
+                  "    pm.expect(response.data).to.have.property('videos');",
+                  "    pm.expect(response.data.videos).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Stock Audios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/stock-media/audios?category=music&genre=electronic&duration_min=30&duration_max=180",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "stock-media",
+                "audios"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "music"
+                },
+                {
+                  "key": "genre",
+                  "value": "electronic"
+                },
+                {
+                  "key": "duration_min",
+                  "value": "30"
+                },
+                {
+                  "key": "duration_max",
+                  "value": "180"
+                }
+              ]
+            },
+            "description": "Get available stock audio files"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has audios array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Stock media library access endpoints for images, videos, and audio",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Clones",
+      "item": [
+        {
+          "name": "Get Clones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/clones",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones"
+              ]
+            },
+            "description": "Get all clones (voices and avatars)"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has clones array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Clone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/clones/{{clonable_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones",
+                "{{clonable_id}}"
+              ]
+            },
+            "description": "Get specific clone by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Clone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/clones/{{clonable_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones",
+                "{{clonable_id}}"
+              ]
+            },
+            "description": "Delete a clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Voice Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "audio",
+                  "type": "file",
+                  "src": "voice-sample.wav"
+                },
+                {
+                  "key": "name",
+                  "value": "My Voice Clone",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Professional voice clone for content creation",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_url}}/clones/voices",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones",
+                "voices"
+              ]
+            },
+            "description": "Create a new voice clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has voice clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.expect(response.data).to.have.property('type', 'voice');",
+                  "    pm.environment.set('voice_clone_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Avatar Clone",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "avatar-image.jpg"
+                },
+                {
+                  "key": "name",
+                  "value": "My Avatar Clone",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Professional avatar clone for video content",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_url}}/clones/avatars",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones",
+                "avatars"
+              ]
+            },
+            "description": "Create a new avatar clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has avatar clone data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.expect(response.data).to.have.property('type', 'avatar');",
+                  "    pm.environment.set('avatar_clone_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Clone Voices",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"voice_settings\": {\n    \"tone\": \"professional\",\n    \"speed\": \"normal\",\n    \"pitch\": \"medium\",\n    \"emotion\": \"neutral\"\n  },\n  \"voice_samples\": [\n    {\n      \"text\": \"Hello, this is my updated voice\",\n      \"emphasis\": \"casual\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/clones/{{clonable_id}}/voices",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "clones",
+                "{{clonable_id}}",
+                "voices"
+              ]
+            },
+            "description": "Update voice settings for a clone"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated voice data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('voice_settings');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Voice and avatar cloning management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Metadata",
+      "item": [
+        {
+          "name": "Get Social Providers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/metadata/social-providers",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "social-providers"
+              ]
+            },
+            "description": "Get available social media providers"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has social providers\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get YouTube Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/metadata/youtube/categories",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "youtube",
+                "categories"
+              ]
+            },
+            "description": "Get YouTube video categories"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has YouTube categories\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get TikTok Creator Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"@example_creator\",\n  \"include_metrics\": true,\n  \"include_recent_posts\": false\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/metadata/tiktok/creator-info",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "tiktok",
+                "creator-info"
+              ]
+            },
+            "description": "Get TikTok creator information and metrics"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has creator info\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('username');",
+                  "    pm.expect(response.data).to.have.property('metrics');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Content Title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topic\": \"Artificial Intelligence in Healthcare\",\n  \"platform\": \"youtube\",\n  \"tone\": \"professional\",\n  \"max_length\": 60,\n  \"include_keywords\": [\"AI\", \"healthcare\", \"technology\"]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/metadata/generate/title",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "generate",
+                "title"
+              ]
+            },
+            "description": "Generate optimized content title"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has generated title\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('title');",
+                  "    pm.expect(response.data.title).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Content Description",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI Revolution in Healthcare: Transforming Patient Care\",\n  \"platform\": \"youtube\",\n  \"tone\": \"informative\",\n  \"max_length\": 500,\n  \"include_cta\": true,\n  \"target_keywords\": [\"healthcare AI\", \"patient care\", \"medical technology\"]\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/metadata/generate/description",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "generate",
+                "description"
+              ]
+            },
+            "description": "Generate optimized content description"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has generated description\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('description');",
+                  "    pm.expect(response.data.description).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Content Tags",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI Revolution in Healthcare\",\n  \"description\": \"Exploring how artificial intelligence is transforming patient care and medical diagnosis\",\n  \"platform\": \"youtube\",\n  \"max_tags\": 15,\n  \"category\": \"Science & Technology\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/metadata/generate/tags",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "generate",
+                "tags"
+              ]
+            },
+            "description": "Generate relevant content tags"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has generated tags\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('tags');",
+                  "    pm.expect(response.data.tags).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Content Context",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content_url\": \"https://example.com/article\",\n  \"content_text\": \"Alternative text content if URL not provided\",\n  \"analysis_type\": \"comprehensive\",\n  \"include_sentiment\": true,\n  \"include_keywords\": true,\n  \"max_context_length\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/metadata/generate/context",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "metadata",
+                "generate",
+                "context"
+              ]
+            },
+            "description": "Generate contextual analysis for content"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has generated context\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('context');",
+                  "    pm.expect(response.data).to.have.property('keywords');",
+                  "    pm.expect(response.data).to.have.property('sentiment');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Content metadata generation and social platform information endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
     }
   ],
   "variable": [
