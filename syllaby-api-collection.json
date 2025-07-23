@@ -147,6 +147,129 @@
           ]
         },
         {
+          "name": "Check Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test check email response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has exists field\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('exists');",
+                  "    pm.expect(typeof jsonData.exists).to.equal('boolean');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/authentication/check-email",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "check-email"
+              ]
+            },
+            "description": "Check if email exists in the system"
+          },
+          "response": [
+            {
+              "name": "Success - Email Exists",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"test@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/check-email",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "check-email"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"exists\": true\n}"
+            },
+            {
+              "name": "Success - Email Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"nonexistent@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/check-email",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "check-email"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"exists\": false\n}"
+            }
+          ]
+        },
+        {
           "name": "Login",
           "event": [
             {
@@ -286,9 +409,1304 @@
               "body": "{\n    \"message\": \"The provided credentials are incorrect.\"\n}"
             }
           ]
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test logout response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});",
+                  "",
+                  "// Clear auth token on successful logout",
+                  "if (pm.response.code === 200) {",
+                  "    pm.environment.unset('auth_token');",
+                  "    pm.environment.unset('user_id');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/authentication/logout",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "logout"
+              ]
+            },
+            "description": "Logout user and invalidate authentication token"
+          },
+          "response": [
+            {
+              "name": "Success - User Logged Out",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/authentication/logout",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "logout"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Successfully logged out\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Social Redirect",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test social redirect response",
+                  "pm.test(\"Status code is 302 or 200\", function () {",
+                  "    pm.expect([200, 302]).to.include(pm.response.code);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test(\"Response has redirect URL\", function () {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData).to.have.property('redirect_url');",
+                  "        pm.expect(jsonData.redirect_url).to.be.a('string');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/authentication/redirect/{{provider}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "redirect",
+                "{{provider}}"
+              ]
+            },
+            "description": "Get social provider redirect URL (provider: google, facebook, twitter, etc.)"
+          },
+          "response": [
+            {
+              "name": "Success - Redirect URL",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/authentication/redirect/google",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "redirect",
+                    "google"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"redirect_url\": \"https://accounts.google.com/oauth/authorize?client_id=...&redirect_uri=...\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Social Callback",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test social callback response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('user');",
+                  "    pm.expect(jsonData.data).to.have.property('token');",
+                  "});",
+                  "",
+                  "// Save auth token",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('auth_token', jsonData.data.token);",
+                  "    pm.environment.set('user_id', jsonData.data.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/authentication/callback/{{provider}}?code={{auth_code}}&state={{auth_state}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "authentication",
+                "callback",
+                "{{provider}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "{{auth_code}}"
+                },
+                {
+                  "key": "state",
+                  "value": "{{auth_state}}"
+                }
+              ]
+            },
+            "description": "Handle social provider callback and authenticate user"
+          },
+          "response": [
+            {
+              "name": "Success - User Authenticated",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/authentication/callback/google?code=auth_code_here&state=state_here",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "authentication",
+                    "callback",
+                    "google"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "auth_code_here"
+                    },
+                    {
+                      "key": "state",
+                      "value": "state_here"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"name\": \"John Doe\",\n            \"email\": \"john@example.com\",\n            \"provider\": \"google\",\n            \"provider_id\": \"google_user_id\",\n            \"created_at\": \"2025-01-18T00:00:00.000000Z\"\n        },\n        \"token\": \"1|laravel_sanctum_token_here\"\n    }\n}"
+            }
+          ]
         }
       ],
       "description": "Authentication endpoints for user registration, login, logout, and social authentication"
+    },
+    {
+      "name": "Recovery",
+      "item": [
+        {
+          "name": "Forgot Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test forgot password response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/recovery/forgot",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "recovery",
+                "forgot"
+              ]
+            },
+            "description": "Send password reset email to user"
+          },
+          "response": [
+            {
+              "name": "Success - Password Reset Email Sent",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"test@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/recovery/forgot",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "recovery",
+                    "forgot"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Password reset email sent successfully\"\n}"
+            },
+            {
+              "name": "Error - Email Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"nonexistent@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/recovery/forgot",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "recovery",
+                    "forgot"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Email address not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test reset password response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"token\": \"{{reset_token}}\",\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{new_password}}\",\n    \"password_confirmation\": \"{{new_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/recovery/reset",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "recovery",
+                "reset"
+              ]
+            },
+            "description": "Reset user password using reset token"
+          },
+          "response": [
+            {
+              "name": "Success - Password Reset",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"token\": \"reset_token_here\",\n    \"email\": \"test@example.com\",\n    \"password\": \"newpassword123\",\n    \"password_confirmation\": \"newpassword123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/recovery/reset",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "recovery",
+                    "reset"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Password reset successfully\"\n}"
+            },
+            {
+              "name": "Error - Invalid Token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"token\": \"invalid_token\",\n    \"email\": \"test@example.com\",\n    \"password\": \"newpassword123\",\n    \"password_confirmation\": \"newpassword123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/recovery/reset",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "recovery",
+                    "reset"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Invalid or expired reset token\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Password recovery endpoints for forgot password and reset password functionality"
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test get notifications response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has data array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",  
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/notifications",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            },
+            "description": "Get user notifications"
+          },
+          "response": [
+            {
+              "name": "Success - Notifications Retrieved",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{api_url}}/notifications",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "notifications"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"type\": \"video_completed\",\n            \"title\": \"Video Generation Complete\",\n            \"message\": \"Your video 'Technology Trends' has been generated successfully\",\n            \"read_at\": null,\n            \"created_at\": \"2025-01-18T10:00:00.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"type\": \"credit_low\",\n            \"title\": \"Credits Running Low\",\n            \"message\": \"You have 5 credits remaining\",\n            \"read_at\": \"2025-01-18T11:00:00.000000Z\",\n            \"created_at\": \"2025-01-18T09:00:00.000000Z\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test update notifications response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"notification_ids\": [1, 2, 3],\n    \"action\": \"mark_read\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/notifications",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            },
+            "description": "Update notifications (mark as read/unread, delete, etc.)"
+          },
+          "response": [
+            {
+              "name": "Success - Notifications Updated",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"notification_ids\": [1, 2],\n    \"action\": \"mark_read\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/notifications",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "notifications"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Notifications updated successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Notification Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test update notification settings response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email_notifications\": true,\n    \"push_notifications\": false,\n    \"video_completion\": true,\n    \"credit_alerts\": true,\n    \"marketing_emails\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/notifications/settings",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "notifications",
+                "settings"
+              ]
+            },
+            "description": "Update user notification preferences"
+          },
+          "response": [
+            {
+              "name": "Success - Settings Updated",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email_notifications\": true,\n    \"push_notifications\": false,\n    \"video_completion\": true,\n    \"credit_alerts\": true,\n    \"marketing_emails\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/notifications/settings",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "notifications",
+                    "settings"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Notification settings updated successfully\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "User notification management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Credits",
+      "item": [
+        {
+          "name": "Get Credit Overview",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test credit overview response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has credit data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('total');",
+                  "    pm.expect(jsonData.data).to.have.property('remaining');",
+                  "    pm.expect(jsonData.data).to.have.property('used');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/credits/overview",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "credits",
+                "overview"
+              ]
+            },
+            "description": "Get user credit overview and usage statistics"
+          },
+          "response": [
+            {
+              "name": "Success - Credit Overview",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{api_url}}/credits/overview",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "credits",
+                    "overview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"total\": 100,\n        \"remaining\": 75,\n        \"used\": 25,\n        \"usage_history\": [\n            {\n                \"date\": \"2025-01-18\",\n                \"credits_used\": 5,\n                \"action\": \"video_generation\",\n                \"description\": \"Created faceless video\"\n            },\n            {\n                \"date\": \"2025-01-17\",\n                \"credits_used\": 3,\n                \"action\": \"script_generation\",\n                \"description\": \"Generated video script\"\n            }\n        ],\n        \"next_reset\": \"2025-02-01T00:00:00.000000Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Estimate Credit Cost",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test credit estimation response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has estimation data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('estimated_cost');",
+                  "    pm.expect(jsonData.data).to.have.property('breakdown');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"video_generation\",\n    \"parameters\": {\n        \"duration\": 60,\n        \"quality\": \"1080p\",\n        \"with_voice\": true,\n        \"with_captions\": true\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/credits/estimate",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "credits",
+                "estimate"
+              ]
+            },
+            "description": "Estimate credit cost for a specific action"
+          },
+          "response": [
+            {
+              "name": "Success - Cost Estimated",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action\": \"video_generation\",\n    \"parameters\": {\n        \"duration\": 60,\n        \"quality\": \"1080p\",\n        \"with_voice\": true,\n        \"with_captions\": true\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/credits/estimate",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "credits",
+                    "estimate"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"estimated_cost\": 8,\n        \"breakdown\": {\n            \"base_video_generation\": 5,\n            \"voice_synthesis\": 2,\n            \"caption_generation\": 1\n        },\n        \"sufficient_credits\": true,\n        \"remaining_after\": 67\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Credit management and estimation endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Surveys",
+      "item": [
+        {
+          "name": "Get User Experience Surveys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test get surveys response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has data array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/surveys",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "surveys"
+              ]
+            },
+            "description": "Get available user experience surveys"
+          },
+          "response": [
+            {
+              "name": "Success - Surveys Retrieved",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{api_url}}/surveys",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "surveys"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Video Creation Experience\",\n            \"description\": \"Help us improve your video creation experience\",\n            \"questions\": [\n                {\n                    \"id\": 1,\n                    \"question\": \"How satisfied are you with the video quality?\",\n                    \"type\": \"scale\",\n                    \"scale\": \"1-5\"\n                },\n                {\n                    \"id\": 2,\n                    \"question\": \"What features would you like to see added?\",\n                    \"type\": \"text\"\n                }\n            ],\n            \"active\": true\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit Survey Response",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test submit survey response",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"survey_id\": 1,\n    \"responses\": [\n        {\n            \"question_id\": 1,\n            \"answer\": \"4\"\n        },\n        {\n            \"question_id\": 2,\n            \"answer\": \"More template options and better audio quality\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/surveys",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "surveys"
+              ]
+            },
+            "description": "Submit user experience survey response"
+          },
+          "response": [
+            {
+              "name": "Success - Survey Submitted",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"survey_id\": 1,\n    \"responses\": [\n        {\n            \"question_id\": 1,\n            \"answer\": \"4\"\n        },\n        {\n            \"question_id\": 2,\n            \"answer\": \"More template options and better audio quality\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/surveys",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "surveys"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Survey response submitted successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Industries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test get industries response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has data array\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/surveys/industries",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "surveys",
+                "industries"
+              ]
+            },
+            "description": "Get available industries for survey categorization"
+          },
+          "response": [
+            {
+              "name": "Success - Industries Retrieved",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/surveys/industries",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "surveys",
+                    "industries"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Technology\",\n            \"slug\": \"technology\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Marketing\",\n            \"slug\": \"marketing\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Education\",\n            \"slug\": \"education\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Healthcare\",\n            \"slug\": \"healthcare\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Entertainment\",\n            \"slug\": \"entertainment\"\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ],
+      "description": "User experience surveys and industry information endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
     },
     {
       "name": "User",
@@ -1027,6 +2445,183 @@
                 },
                 "description": "Scrape images from URL"
               }
+            },
+            {
+              "name": "Scrape Media",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Test scrape media response",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has faceless data with assets\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "    pm.expect(jsonData.data).to.have.property('id');",
+                      "    pm.expect(jsonData.data).to.have.property('assets');",
+                      "});",
+                      "",
+                      "// Find and save first video asset ID for download testing",
+                      "if (pm.response.code === 200) {",
+                      "    const jsonData = pm.response.json();",
+                      "    const videoAsset = jsonData.data.assets.find(asset => asset.is_video === true);",
+                      "    if (videoAsset) {",
+                      "        pm.environment.set(\"video_asset_id\", videoAsset.id);",
+                      "        console.log(\"Found video asset ID:\", videoAsset.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/article-with-media\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/scrape/media",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "scrape",
+                    "media"
+                  ]
+                },
+                "description": "Extract media (images and videos) from a URL and associate them with the faceless video"
+              }
+            },
+            {
+              "name": "Download Video Asset",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Test download video response",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has video asset data\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "    pm.expect(jsonData.data).to.have.property('id');",
+                      "    pm.expect(jsonData.data).to.have.property('download_status');",
+                      "    pm.expect(jsonData.data).to.have.property('is_video');",
+                      "    pm.expect(jsonData.data).to.have.property('thumbnail');",
+                      "});",
+                      "",
+                      "// Check if download started",
+                      "pm.test(\"Download status is not pending\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.download_status).to.not.equal('pending');",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "// Note: video_asset_id should be set from a previous scrape media request",
+                      "// or you can manually set it to a video asset ID",
+                      "if (!pm.environment.get('video_asset_id')) {",
+                      "    console.log('Warning: video_asset_id not set. Please run Scrape Media first or set manually.');",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{api_url}}/videos/faceless/{{faceless_id}}/assets/{{video_asset_id}}/download",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "videos",
+                    "faceless",
+                    "{{faceless_id}}",
+                    "assets",
+                    "{{video_asset_id}}",
+                    "download"
+                  ]
+                },
+                "description": "Download a video asset that was previously scraped. The asset must be a video type with pending download status."
+              },
+              "response": [
+                {
+                  "name": "Success - Download Started",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{api_url}}/videos/faceless/123/assets/29201/download",
+                      "host": [
+                        "{{api_url}}"
+                      ],
+                      "path": [
+                        "videos",
+                        "faceless",
+                        "123",
+                        "assets",
+                        "29201",
+                        "download"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"data\": {\n        \"id\": 29201,\n        \"name\": \"Video Asset\",\n        \"type\": \"scraped\",\n        \"status\": \"success\",\n        \"download_status\": \"downloading\",\n        \"download_url\": \"https://example.com/video.mp4\",\n        \"download_started_at\": \"2025-01-18T12:00:00.000000Z\",\n        \"is_video\": true,\n        \"thumbnail\": {\n            \"asset_id\": 29193,\n            \"url\": \"https://cdn.example.com/thumbnail.jpg\"\n        },\n        \"video\": null,\n        \"created_at\": \"2025-01-18T11:00:00.000000Z\",\n        \"updated_at\": \"2025-01-18T12:00:00.000000Z\"\n    }\n}"
+                }
+              ]
             }
           ]
         },
