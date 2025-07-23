@@ -4634,6 +4634,1111 @@
           }
         ]
       }
+    },
+    {
+      "name": "Keywords",
+      "item": [
+        {
+          "name": "Get Keyword History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/keywords/history",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "keywords",
+                "history"
+              ]
+            },
+            "description": "Get keyword search history"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has keyword history\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Keyword History",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/keywords/{{keyword}}/history",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "keywords",
+                "{{keyword}}",
+                "history"
+              ]
+            },
+            "description": "Delete specific keyword from history"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Keyword history management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ideas",
+      "item": [
+        {
+          "name": "Get Ideas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/ideas",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "ideas"
+              ]
+            },
+            "description": "Get all ideas"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has ideas array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Discover Ideas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyword\": \"artificial intelligence\",\n  \"category\": \"technology\",\n  \"limit\": 10\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/ideas/discover",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "ideas",
+                "discover"
+              ]
+            },
+            "description": "Discover new ideas based on keywords"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has discovered ideas\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Idea Suggestions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/ideas/suggestions",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "ideas",
+                "suggestions"
+              ]
+            },
+            "description": "Get suggested ideas"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has suggestions\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Idea discovery and suggestion endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Topics",
+      "item": [
+        {
+          "name": "Get Topics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/topics",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "topics"
+              ]
+            },
+            "description": "Get all topics"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has topics array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Related Topics",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topic\": \"machine learning\",\n  \"count\": 5\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/topics/related",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "topics",
+                "related"
+              ]
+            },
+            "description": "Generate related topics"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has related topics\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Bookmark Topic",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookmarked\": true\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/topics/{{topic_id}}/bookmark",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "topics",
+                "{{topic_id}}",
+                "bookmark"
+              ]
+            },
+            "description": "Bookmark or unbookmark a topic"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has bookmark status\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('bookmarked');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Topic management and related topic generation endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Get Templates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/templates",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "templates"
+              ]
+            },
+            "description": "Get all templates"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has templates array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Template",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/templates/{{template_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "templates",
+                "{{template_id}}"
+              ]
+            },
+            "description": "Get specific template by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has template data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Template management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Get Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/tags",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "tags"
+              ]
+            },
+            "description": "Get all tags"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has tags array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/tags/{{tag_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "tags",
+                "{{tag_id}}"
+              ]
+            },
+            "description": "Get specific tag by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has tag data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Tag management endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Presets",
+      "item": [
+        {
+          "name": "Get Faceless Presets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/presets/faceless",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "presets",
+                "faceless"
+              ]
+            },
+            "description": "Get all faceless video presets"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has presets array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Faceless Preset",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Custom Preset\",\n  \"description\": \"Custom preset for tech videos\",\n  \"settings\": {\n    \"voice\": \"professional\",\n    \"background\": \"tech\",\n    \"duration\": 60\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/presets/faceless",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "presets",
+                "faceless"
+              ]
+            },
+            "description": "Create a new faceless video preset"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has preset data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('preset_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Faceless Preset",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Custom Preset\",\n  \"description\": \"Updated preset description\",\n  \"settings\": {\n    \"voice\": \"casual\",\n    \"background\": \"nature\",\n    \"duration\": 90\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/presets/faceless/{{preset_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "presets",
+                "faceless",
+                "{{preset_id}}"
+              ]
+            },
+            "description": "Update an existing faceless preset"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated preset data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Faceless Preset",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/presets/faceless/{{preset_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "presets",
+                "faceless",
+                "{{preset_id}}"
+              ]
+            },
+            "description": "Delete a faceless preset"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Preset management endpoints for faceless videos",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Characters",
+      "item": [
+        {
+          "name": "Get Characters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/characters",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters"
+              ]
+            },
+            "description": "Get all characters"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has characters array\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Character",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John AI\",\n  \"description\": \"Professional AI character for business videos\",\n  \"voice_settings\": {\n    \"tone\": \"professional\",\n    \"speed\": \"normal\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/characters",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters"
+              ]
+            },
+            "description": "Create a new character"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has character data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "    pm.environment.set('character_id', response.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Character",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}"
+              ]
+            },
+            "description": "Get specific character by ID"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has character data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Character",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated John AI\",\n  \"description\": \"Updated professional AI character\",\n  \"voice_settings\": {\n    \"tone\": \"casual\",\n    \"speed\": \"slow\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}"
+              ]
+            },
+            "description": "Update an existing character"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated character data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Character",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}"
+              ]
+            },
+            "description": "Delete a character"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Character Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "character-image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}/image",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}",
+                "image"
+              ]
+            },
+            "description": "Update character image"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has image data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('image_url');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate Character Preview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hello, this is a preview of my voice\",\n  \"settings\": {\n    \"tone\": \"friendly\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}/preview",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}",
+                "preview"
+              ]
+            },
+            "description": "Generate character voice preview"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has preview data\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('preview_url');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Train Character",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"training_data\": [\n    \"Sample text for training\",\n    \"Another training phrase\"\n  ],\n  \"training_type\": \"voice_clone\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/characters/{{character_id}}/train",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "characters",
+                "{{character_id}}",
+                "train"
+              ]
+            },
+            "description": "Train character with new data"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has training status\", function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('data');",
+                  "    pm.expect(response.data).to.have.property('training_status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "AI character management and training endpoints",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{auth_token}}",
+            "type": "string"
+          }
+        ]
+      }
     }
   ],
   "variable": [
