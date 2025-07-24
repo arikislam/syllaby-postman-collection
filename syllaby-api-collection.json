@@ -2084,6 +2084,146 @@
           }
         },
         {
+          "name": "Update Subscription Provider",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test subscription provider update response",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.message).to.equal('Subscription provider updated successfully.');",
+                  "});",
+                  "",
+                  "pm.test(\"User source is updated to android\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('source');",
+                  "    pm.expect(jsonData.data.source).to.equal('android');",
+                  "});",
+                  "",
+                  "// Test error responses",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.test(\"Error response has proper structure\", function () {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData).to.have.property('error');",
+                  "        pm.expect(jsonData.error).to.have.property('code');",
+                  "        pm.expect(jsonData.error).to.have.property('status');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/user/update-subscription-provider",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "user",
+                "update-subscription-provider"
+              ]
+            },
+            "description": "Update user's subscription provider from Web (Stripe) to Android (Google Play). Only eligible users can perform this update - must have no Stripe customer ID, no existing subscriptions, and no plan ID assigned."
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/user/update-subscription-provider",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-subscription-provider"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Subscription provider updated successfully.\",\n    \"status\": 200,\n    \"data\": {\n        \"id\": 123,\n        \"name\": \"John Doe\",\n        \"stripe_id\": null,\n        \"email\": \"john@example.com\",\n        \"credits\": {\n            \"remaining\": 100,\n            \"total\": 100,\n            \"extra\": 0\n        },\n        \"subscription\": {\n            \"exists\": false,\n            \"trial\": null,\n            \"active\": null\n        },\n        \"settings\": {},\n        \"notifications\": {},\n        \"features\": [],\n        \"source\": \"android\",\n        \"answers\": [],\n        \"show_welcome_modal\": false,\n        \"created_at\": \"2024-01-15T10:30:00.000000Z\",\n        \"updated_at\": \"2024-01-15T10:35:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Error - Not Eligible",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/user/update-subscription-provider",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-subscription-provider"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"User is not eligible to update subscription provider.\",\n    \"error\": {\n        \"code\": \"GEN-FORBIDDEN\",\n        \"status\": 403\n    }\n}"
+            },
+            {
+              "name": "Error - Wrong Provider",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{api_url}}/user/update-subscription-provider",
+                  "host": [
+                    "{{api_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "update-subscription-provider"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Only users with Web subscription provider can update to Android.\",\n    \"error\": {\n        \"code\": \"GEN-FORBIDDEN\",\n        \"status\": 403\n    }\n}"
+            }
+          ]
+        },
+        {
           "name": "Delete User Account",
           "event": [
             {
