@@ -1,18 +1,19 @@
 # Syllaby Postman Collection
 
-This repository contains the Postman collection and environments for the Syllaby API.
+This repository contains the Postman API collection and testing suite for the Syllaby platform. It serves as the central source of truth for API documentation, testing, and integration workflows.
 
 ## Repository Structure
 
 ```
-├── syllaby-api-collection.json      # Main API collection
-├── syllaby-local-environment.json   # Local development (Valet)
-├── syllaby-development-environment.json  # Dev server
-├── syllaby-staging-environment.json     # Staging server
-├── syllaby-production-environment.json  # Production server
-├── sync-to-postman.sh              # Script to sync with Postman
-├── package.json                    # NPM dependencies for Postman CLI
-└── README.md                       # This file
+├── syllaby-api-collection.json          # Main Postman collection with all API endpoints
+├── syllaby-local-environment.json       # Environment for local development
+├── syllaby-development-environment.json # Environment for dev server
+├── syllaby-staging-environment.json     # Environment for staging
+├── syllaby-production-environment.json  # Environment for production
+├── postman-sync.js                     # Script for syncing with Postman cloud
+├── sync-to-postman.sh                  # Shell script with sync instructions
+├── package.json                        # NPM dependencies and scripts
+└── README.md                          # This file
 ```
 
 ## Environment URLs
